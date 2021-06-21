@@ -129,10 +129,11 @@ def main(args):
 
   logger.info(f'Fine-tuning the model...')
   steps_per_epoch = args.eval_every or schedule_length
+  logger.info(f"steps_per_epoch={steps_per_epoch}, epochs={schedule_length // min(steps_per_epoch, schedule_length)}")
   history = model.fit(
       data_train,
       steps_per_epoch=steps_per_epoch,
-      epochs=schedule_length // steps_per_epoch,
+      epochs=schedule_length // min(steps_per_epoch, schedule_length),
       validation_data=data_test,  # here we are only using
                                   # this data to evaluate our performance
       callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'])],
@@ -140,7 +141,7 @@ def main(args):
 
   for epoch, accu in enumerate(history.history['val_accuracy']):
     logger.info(
-            f'Step: {epoch * args.eval_every}, '
+            f'Step: {epoch * steps_per_epoch}, '
             f'Test accuracy: {accu:0.3f}')
 
 
