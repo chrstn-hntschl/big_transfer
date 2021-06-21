@@ -1,3 +1,4 @@
 models/*
+datasets/*
 *.npz
 __pycache__/
