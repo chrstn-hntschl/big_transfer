@@ -25,7 +25,8 @@ RUN pip3 --no-cache-dir install --upgrade pip
 RUN pip3 install tensorflow-datasets==4.3.0 tensorflow-probability==0.10.0 PyYAML==5.4.1
 RUN pip3 install cloudpickle==1.3.0
 
-RUN wget -O /tmp/big_transfer.zip https://github.com/chrstn-hntschl/big_transfer/archive/refs/heads/master.zip && cd /tmp && unzip big_transfer.zip && mv /tmp/big_transfer-master /opt/big_transfer
+ADD https://github.com/chrstn-hntschl/big_transfer/archive/refs/heads/master.zip /tmp/big_transfer.zip
+RUN cd /tmp && unzip big_transfer.zip && mv /tmp/big_transfer-master /opt/big_transfer
 
 WORKDIR "/opt/big_transfer"
 
