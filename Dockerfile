@@ -22,7 +22,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN pip3 --no-cache-dir install --upgrade pip 
 
 # installing additional stuff
-RUN pip3 install tensorflow-datasets==4.3.0 tensorflow-probability==0.10.0 PyYAML==5.4.1
+RUN pip3 install tensorflow-datasets==4.3.0 tensorflow-probability==0.10.0 PyYAML==5.4.1 scikit-learn==0.24.0
 RUN pip3 install cloudpickle==1.3.0
 
 ADD https://github.com/chrstn-hntschl/big_transfer/archive/refs/heads/master.zip /tmp/big_transfer.zip
