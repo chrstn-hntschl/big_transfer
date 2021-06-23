@@ -27,6 +27,7 @@ import bit_common
 import bit_hyperrule
 import bit_tf2.models as models
 import input_pipeline_tf2_or_jax as input_pipeline
+import tensorflow_datasets as tfds
 
 from sklearn.metrics import average_precision_score
 
@@ -140,13 +141,18 @@ def main(args):
                                   # this data to evaluate our performance
       callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'])],
   )
+  scores = model.predict(x=data_test)
 
   dataset_info = input_pipeline.get_dataset_info(
       args.dataset, args.dataset_config, 'validation', args.examples_per_class)
-  scores = model.predict(x=data_test)
+  data_builder = tfds.builder("wikipaintings", config="Wikipaintings_5")
+  data_test = data_builder.as_dataset(split="validation", decoders={'image': tfds.decode.SkipDecoding()})
+
   gt = np.zeros((dataset_info['num_examples'], dataset_info['num_classes']), dtype='float32')
-  for i, example in data_test.enumerate():
+  i = 0
+  for example in data_test.as_numpy_iterator():
     gt[i, example["label"]] = 1.
+    i += 1
 
   map_score = average_precision_score(y_true=gt, y_score=scores)
 
