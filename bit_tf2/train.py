@@ -148,7 +148,7 @@ def main(args):
 if __name__ == "__main__":
   parser = bit_common.argparser(models.KNOWN_MODELS.keys())
   parser.add_argument("--tfds_manual_dir", default=None,
-                      help="Path to maually downloaded dataset.")
+                      help="Path to manually downloaded dataset.")
   parser.add_argument("--batch_eval", default=32, type=int,
                       help="Eval batch size.")
   main(parser.parse_args())
