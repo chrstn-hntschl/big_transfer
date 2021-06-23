@@ -57,9 +57,9 @@ class Wikipaintings(tfds.core.GeneratorBasedBuilder):
             description=_DESCRIPTION,
             features=tfds.features.FeaturesDict({
                 "image": tfds.features.Image(),
-                "category": tfds.features.ClassLabel(num_classes=22),
+                "label": tfds.features.ClassLabel(num_classes=22),
             }),
-            supervised_keys=("image", "category"),
+            supervised_keys=("image", "label"),
             homepage=_URL,
             citation=_CITATION
         )
@@ -72,7 +72,7 @@ class Wikipaintings(tfds.core.GeneratorBasedBuilder):
         with tf.io.gfile.GFile(descriptor_path) as descr_f:
             descriptor = yaml.load(descr_f)
 
-        self.info.features["category"].names = descriptor["categories"]
+        self.info.features["label"].names = descriptor["categories"]
         if os.path.isabs(descriptor["basepath"]):
             raise AssertionError(f"Absolute image basepath is not supported! "
                                  f"Images must be located within descriptor directory!")
@@ -107,9 +107,10 @@ class Wikipaintings(tfds.core.GeneratorBasedBuilder):
           The image path, and its corresponding label and filename.
 
         """
-        for category in self.info.features["category"].names:
-            for idx in descriptor[subset]["gt"][category]:
+        for label in self.info.features["label"].names:
+            for idx in descriptor[subset]["gt"][label]:
                 yield idx, {
                     "image": os.path.join(images_dir_path, descriptor[subset]["images"][idx]),
-                    "category": category
+                    #"label": descriptor["categories"].index(label)
+                    "label": label
                 }
