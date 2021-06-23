@@ -1,5 +1,5 @@
-models/
-datasets/
+/models/
+/datasets/
 .idea/
 *.npz
 __pycache__/
