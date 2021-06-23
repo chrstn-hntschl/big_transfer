@@ -71,7 +71,7 @@ def sample_subset(data, num_examples, num_classes,
                   tf.data.experimental.AUTOTUNE)
 
 
-def get_data(dataset, mode,
+def get_data(dataset, dataset_config, mode,
              repeats, batch_size,
              resize_size, crop_size,
              mixup_alpha,
@@ -80,7 +80,7 @@ def get_data(dataset, mode,
              tfds_manual_dir):
 
   split = DATASET_SPLITS[dataset][mode]
-  dataset_info = get_dataset_info(dataset, split, examples_per_class)
+  dataset_info = get_dataset_info(dataset, dataset_config, split, examples_per_class)
 
   data_builder = tfds.builder(dataset)
   data_builder.download_and_prepare(

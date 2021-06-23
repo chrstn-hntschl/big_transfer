@@ -71,7 +71,7 @@ def main(args):
 
   resize_size, crop_size = bit_hyperrule.get_resolution_from_dataset(args.dataset)
   data_train = input_pipeline.get_data(
-    dataset=args.dataset, mode='train',
+    dataset=args.dataset, dataset_config=args.dataset_config, mode='train',
     repeats=None, batch_size=args.batch,
     resize_size=resize_size, crop_size=crop_size,
     examples_per_class=args.examples_per_class,
@@ -80,7 +80,7 @@ def main(args):
     num_devices=num_devices,
     tfds_manual_dir=args.tfds_manual_dir)
   data_test = input_pipeline.get_data(
-    dataset=args.dataset, mode='test',
+    dataset=args.dataset, dataset_config=args.dataset_config, mode='test',
     repeats=1, batch_size=args.batch,
     resize_size=resize_size, crop_size=crop_size,
     examples_per_class=1, examples_per_class_seed=0,
