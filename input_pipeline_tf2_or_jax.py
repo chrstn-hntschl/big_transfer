@@ -82,7 +82,7 @@ def get_data(dataset, dataset_config, mode,
   split = DATASET_SPLITS[dataset][mode]
   dataset_info = get_dataset_info(dataset, dataset_config, split, examples_per_class)
 
-  data_builder = tfds.builder(dataset)
+  data_builder = tfds.builder(dataset, config=dataset_config)
   data_builder.download_and_prepare(
    download_config=tfds.download.DownloadConfig(manual_dir=tfds_manual_dir))
   data = data_builder.as_dataset(
