@@ -31,11 +31,12 @@ DATASET_SPLITS = {
   'cifar10': {'train': 'train[:98%]', 'test': 'test'},
   'cifar100': {'train': 'train[:98%]', 'test': 'test'},
   'imagenet2012': {'train': 'train[:99%]', 'test': 'validation'},
+  'wikipaintings': {'train': 'train', 'test': 'validation'},
 }
 
 
-def get_dataset_info(dataset, split, examples_per_class):
-  data_builder = tfds.builder(dataset)
+def get_dataset_info(dataset, dataset_config, split, examples_per_class):
+  data_builder = tfds.builder(name=dataset, config=dataset_config)
   original_num_examples = data_builder.info.splits[split].num_examples
   num_classes = data_builder.info.features['label'].num_classes
   if examples_per_class is not None:

@@ -37,6 +37,8 @@ def argparser(known_models):
   parser.add_argument("--dataset", choices=list(bit_hyperrule.known_dataset_sizes.keys()),
                       help="Choose the dataset. It should be easy to add your own! "
                       "Don't forget to set --datadir if necessary.")
+  parser.add_argument("--dataset_config", type=str, default=None,
+                      help="Some datasets (such as wikipaintings) provide different configs (e.g. 'Wikipaintings_5'.")
   parser.add_argument("--examples_per_class", type=int, default=None,
                       help="For the few-shot variant, use this many examples "
                       "per class only.")

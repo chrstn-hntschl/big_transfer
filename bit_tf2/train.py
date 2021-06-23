@@ -62,7 +62,7 @@ def main(args):
 
   # Set up input pipeline
   dataset_info = input_pipeline.get_dataset_info(
-    args.dataset, 'train', args.examples_per_class)
+    args.dataset, args.dataset_config, 'train', args.examples_per_class)
 
   # Distribute training
   strategy = tf.distribute.MirroredStrategy()
