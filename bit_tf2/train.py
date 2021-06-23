@@ -18,6 +18,7 @@
 from functools import partial
 import time
 import os
+import numpy as np
 
 import tensorflow.compat.v2 as tf
 tf.enable_v2_behavior()
@@ -27,6 +28,7 @@ import bit_hyperrule
 import bit_tf2.models as models
 import input_pipeline_tf2_or_jax as input_pipeline
 
+from sklearn.metrics import average_precision_score
 
 def reshape_for_keras(features, batch_size, crop_size):
   features["image"] = tf.reshape(features["image"], (batch_size, crop_size, crop_size, 3))
@@ -139,10 +141,21 @@ def main(args):
       callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'])],
   )
 
+  dataset_info = input_pipeline.get_dataset_info(
+      args.dataset, args.dataset_config, 'validation', args.examples_per_class)
+  scores = model.predict(x=data_test)
+  gt = np.zeros((dataset_info['num_examples'], dataset_info['num_classes']), dtype='float32')
+  for i, example in data_test.enumerate():
+    gt[i, example["label"]] = 1.
+
+  map_score = average_precision_score(y_true=gt, y_score=scores)
+
   for epoch, accu in enumerate(history.history['val_accuracy']):
     logger.info(
             f'Step: {epoch * steps_per_epoch}, '
             f'Test accuracy: {accu:0.3f}')
+
+  logger.info(f"mAP: {map_score:0.4f}")
 
 
 if __name__ == "__main__":
