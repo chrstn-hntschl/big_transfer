@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
   wget \
   unzip \
   ca-certificates \
-  python3-pip && \
+  python3-pip \
+  libyaml-cpp-dev && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists
 
@@ -21,7 +22,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN pip3 --no-cache-dir install --upgrade pip 
 
 # installing additional stuff
-RUN pip3 install tensorflow-datasets==3.1.0 tensorflow-probability==0.10.0
+RUN pip3 install tensorflow-datasets==4.3.0 tensorflow-probability==0.10.0 PyYAML==5.4.1
 RUN pip3 install cloudpickle==1.3.0
 
 RUN wget -O /tmp/big_transfer.zip https://github.com/chrstn-hntschl/big_transfer/archive/refs/heads/master.zip && cd /tmp && unzip big_transfer.zip && mv /tmp/big_transfer-master /opt/big_transfer
