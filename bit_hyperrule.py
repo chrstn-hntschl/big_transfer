@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import bit_tf2.datasets.wikipaintings
+
 def get_resolution(original_resolution):
   """Takes (H,W) and returns (precrop, crop)."""
   area = original_resolution[0] * original_resolution[1]
