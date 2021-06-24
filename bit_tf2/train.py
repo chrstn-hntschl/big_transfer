@@ -19,6 +19,7 @@ from functools import partial
 import time
 import os
 import numpy as np
+import math
 
 import tensorflow.compat.v2 as tf
 tf.enable_v2_behavior()
@@ -84,7 +85,7 @@ def main(args):
     tfds_manual_dir=args.tfds_manual_dir)
   data_test = input_pipeline.get_data(
     dataset=args.dataset, dataset_config=args.dataset_config, mode='test',
-    repeats=1, batch_size=args.batch,
+    repeats=2, batch_size=args.batch,
     resize_size=resize_size, crop_size=crop_size,
     examples_per_class=1, examples_per_class_seed=0,
     mixup_alpha=None,
@@ -141,14 +142,15 @@ def main(args):
                                   # this data to evaluate our performance
       callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'])],
   )
-  scores = model.predict(x=data_test)
+  scores = model.predict(x=data_test, steps=math.ceil(dataset_info["num_examples"]/args.batch))
+  scores = scores[:dataset_info["num_examples"],:]
 
   dataset_info = input_pipeline.get_dataset_info(
       args.dataset, args.dataset_config, 'validation', args.examples_per_class)
   data_builder = tfds.builder("wikipaintings", config="Wikipaintings_5")
   data_test = data_builder.as_dataset(split="validation", decoders={'image': tfds.decode.SkipDecoding()})
 
-  gt = np.zeros((dataset_info['num_examples'], dataset_info['num_classes']), dtype='float32')
+  gt = np.zeros((dataset_info["num_examples"], dataset_info["num_classes"]), dtype='float32')
   i = 0
   for example in data_test.as_numpy_iterator():
     gt[i, example["label"]] = 1.
