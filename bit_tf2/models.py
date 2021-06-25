@@ -276,3 +276,9 @@ NUM_UNITS = {
        (3, 8, 36, 3)
     for k in KNOWN_MODELS
 }
+
+NUM_OUTPUTS = {
+    k: 1000 if "-S-" in k else
+       21843
+    for k in KNOWN_MODELS
+}

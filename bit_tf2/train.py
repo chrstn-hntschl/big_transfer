@@ -100,7 +100,7 @@ def main(args):
     filters_factor = int(args.model[-1])*4
     model = models.ResnetV2(
         num_units=models.NUM_UNITS[args.model],
-        num_outputs=21843,
+        num_outputs=models.NUM_OUTPUTS[args.model],
         filters_factor=filters_factor,
         name="resnet",
         trainable=True,
@@ -141,7 +141,7 @@ def main(args):
                                   # this data to evaluate our performance
       callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'])],
   )
-  scores = model.predict(x=data_test)
+  scores = model.predict(x=data_test) # FIXME: this only computes over full batches! not all examples are predicted floor(1100/batch_size)*batch_size examples
 
   dataset_info = input_pipeline.get_dataset_info(
       args.dataset, args.dataset_config, 'validation', args.examples_per_class)
