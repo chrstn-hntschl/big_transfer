@@ -142,13 +142,16 @@ def main(args):
                                   # this data to evaluate our performance
       callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'])],
   )
+
+  # FIXME: extract into own predict method
   scores = model.predict(x=data_test, steps=math.ceil(dataset_info["num_examples"]/args.batch))
   scores = scores[:dataset_info["num_examples"],:]
 
+  split = input_pipeline.DATASET_SPLITS[args.dataset]["test"]
   dataset_info = input_pipeline.get_dataset_info(
-      args.dataset, args.dataset_config, 'validation', args.examples_per_class)
+      args.dataset, args.dataset_config, split, args.examples_per_class)
   data_builder = tfds.builder("wikipaintings", config="Wikipaintings_5")
-  data_test = data_builder.as_dataset(split="validation", decoders={'image': tfds.decode.SkipDecoding()})
+  data_test = data_builder.as_dataset(split=split, decoders={'image': tfds.decode.SkipDecoding()})
 
   gt = np.zeros((dataset_info["num_examples"], dataset_info["num_classes"]), dtype='float32')
   i = 0
