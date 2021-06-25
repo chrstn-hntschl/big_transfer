@@ -150,7 +150,7 @@ def main(args):
   split = input_pipeline.DATASET_SPLITS[args.dataset]["test"]
   dataset_info = input_pipeline.get_dataset_info(
       args.dataset, args.dataset_config, split, args.examples_per_class)
-  data_builder = tfds.builder("wikipaintings", config="Wikipaintings_5")
+  data_builder = tfds.builder(args.dataset, config=args.dataset_config)
   data_test = data_builder.as_dataset(split=split, decoders={'image': tfds.decode.SkipDecoding()})
 
   gt = np.zeros((dataset_info["num_examples"], dataset_info["num_classes"]), dtype='float32')
