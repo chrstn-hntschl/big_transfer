@@ -39,13 +39,14 @@ def reshape_for_keras(features, batch_size, crop_size):
 
 
 class BiTLRSched(tf.keras.callbacks.Callback):
-  def __init__(self, base_lr, num_samples):
+  def __init__(self, base_lr, num_samples, batch_size):
     self.step = 0
     self.base_lr = base_lr
     self.num_samples = num_samples
+    self.batch_size = batch_size
 
   def on_train_batch_begin(self, batch, logs=None):
-    lr = bit_hyperrule.get_lr(self.step, self.num_samples, self.base_lr)
+    lr = bit_hyperrule.get_lr(self.step, self.num_samples, self.base_lr, self.batch_size)
     tf.keras.backend.set_value(self.model.optimizer.lr, lr)
     self.step += 1
 
@@ -119,7 +120,7 @@ def main(args):
         trainable=True,
         name="head/dense")
 
-    lr_supports = bit_hyperrule.get_schedule(dataset_info['num_examples'])
+    lr_supports = bit_hyperrule.get_schedule(dataset_info['num_examples'], batch_size=args.batch)
 
     schedule_length = lr_supports[-1]
     # NOTE: Let's not do that unless verified necessary and we do the same
@@ -141,7 +142,7 @@ def main(args):
       epochs=epochs,
       validation_data=data_test,  # here we are only using
                                   # this data to evaluate our performance
-      callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'])],
+      callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'], args.batch)],
   )
 
   # FIXME: extract into separate predict method with evaluation metrics as parameter

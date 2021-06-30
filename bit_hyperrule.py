@@ -51,9 +51,9 @@ def get_schedule(dataset_size, batch_size=512):
   return [int(steps*(np.ceil(512 / batch_size))) for steps in schedule]
 
 
-def get_lr(step, dataset_size, base_lr=0.003):
+def get_lr(step, dataset_size, base_lr=0.003, batch_size=512):
   """Returns learning-rate for `step` or None at the end."""
-  supports = get_schedule(dataset_size)
+  supports = get_schedule(dataset_size, batch_size)
   # Linear warmup
   if step < supports[0]:
     return base_lr * step / supports[0]
