@@ -143,13 +143,13 @@ def main(args):
       callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'])],
   )
 
-  # FIXME: extract into own predict method
+  # FIXME: extract into separate predict method with evaluation metrics as parameter
   scores = model.predict(x=data_test, steps=math.ceil(dataset_info["num_examples"]/args.batch))
-  scores = scores[:dataset_info["num_examples"],:]
+  scores = scores[:dataset_info["num_examples"], :]
 
   split = input_pipeline.DATASET_SPLITS[args.dataset]["test"]
   dataset_info = input_pipeline.get_dataset_info(
-      args.dataset, args.dataset_config, split, args.examples_per_class)
+      args.dataset, args.dataset_config, split)
   data_builder = tfds.builder(args.dataset, config=args.dataset_config)
   data_test = data_builder.as_dataset(split=split, decoders={'image': tfds.decode.SkipDecoding()})
 
