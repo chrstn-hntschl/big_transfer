@@ -175,7 +175,7 @@ def main(args):
 
   import csv
   aps_fname = f"{args.dataset_config}_{args.model}.csv" if args.dataset_config else f"{args.dataset}_{args.model}.csv"
-  with open(aps_fname, 'w') as out_csv:
+  with open(os.path.join("/root/tensorflow_datasets/",aps_fname), 'w') as out_csv:
     csv_writer = csv.writer(out_csv, delimiter=',')
     for category in data_builder.info.features["label"].names:
       ap = AP_scores[data_builder.info.features["label"].names.index(category)]
