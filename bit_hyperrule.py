@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import bit_tf2.datasets.wikipaintings
+import numpy as np
 
 def get_resolution(original_resolution):
   """Takes (H,W) and returns (precrop, crop)."""
@@ -40,13 +40,15 @@ def get_mixup(dataset_size):
   return 0.0 if dataset_size < 20_000 else 0.1
 
 
-def get_schedule(dataset_size):
+def get_schedule(dataset_size, batch_size=512):
   if dataset_size < 20_000:
-    return [100, 200, 300, 400, 500]
+    schedule = [100, 200, 300, 400, 500]
   elif dataset_size < 500_000:
-    return [500, 3000, 6000, 9000, 10_000]
+    schedule = [500, 3000, 6000, 9000, 10_000]
   else:
-    return [500, 6000, 12_000, 18_000, 20_000]
+    schedule = [500, 6000, 12_000, 18_000, 20_000]
+
+  return [steps*(np.ceil(512 / batch_size)) for steps in schedule]
 
 
 def get_lr(step, dataset_size, base_lr=0.003):
