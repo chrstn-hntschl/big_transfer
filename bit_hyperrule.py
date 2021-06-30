@@ -48,7 +48,7 @@ def get_schedule(dataset_size, batch_size=512):
   else:
     schedule = [500, 6000, 12_000, 18_000, 20_000]
 
-  return [steps*(np.ceil(512 / batch_size)) for steps in schedule]
+  return [int(steps*(np.ceil(512 / batch_size))) for steps in schedule]
 
 
 def get_lr(step, dataset_size, base_lr=0.003):
