@@ -149,7 +149,7 @@ def main(args):
 
   split = input_pipeline.DATASET_SPLITS[args.dataset]["test"]
   dataset_info = input_pipeline.get_dataset_info(
-      args.dataset, args.dataset_config, split)
+      dataset=args.dataset, dataset_config=args.dataset_config, split=split, examples_per_class=None)
   data_builder = tfds.builder(args.dataset, config=args.dataset_config)
   data_test = data_builder.as_dataset(split=split, decoders={'image': tfds.decode.SkipDecoding()})
 
