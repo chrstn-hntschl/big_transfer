@@ -173,10 +173,15 @@ def main(args):
 
   logger.info("Average precision scores:")
 
-  for category in data_builder.info.features["label"].names:
-    ap = AP_scores[data_builder.info.features["label"].names.index(category)]
-    logger.info(f"{category}: {ap:0.4f}")
+  import csv
+  aps_fname = f"{args.dataset_config}_{args.model}.csv" if args.dataset_config else f"{args.dataset}_{args.model}.csv"
+  with open(aps_fname, 'w') as out_csv:
+    csv_writer = csv.writer(out_csv, delimiter=',')
+    for category in data_builder.info.features["label"].names:
+      ap = AP_scores[data_builder.info.features["label"].names.index(category)]
+      csv_writer.writerow([category, f"{ap:0.4f}"])
   logger.info(f"mAP: {np.mean(AP_scores):0.4f}")
+
 
 if __name__ == "__main__":
   parser = bit_common.argparser(models.KNOWN_MODELS.keys())
