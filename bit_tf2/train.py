@@ -161,15 +161,21 @@ def main(args):
     gt[i, example["label"]] = 1.
     i += 1
 
-  map_score = average_precision_score(y_true=gt, y_score=scores)
+  logger.info(
+    "Num test examples: {0}, num test classes: {1}".format(dataset_info["num_examples"], dataset_info["num_classes"]))
+  AP_scores = average_precision_score(y_true=gt, y_score=scores, average=None)
 
   for epoch, accu in enumerate(history.history['val_accuracy']):
     logger.info(
-            f'Step: {epoch * steps_per_epoch}, '
-            f'Test accuracy: {accu:0.3f}')
+      f'Step: {epoch * steps_per_epoch}, '
+      f'Test accuracy: {accu:0.3f}')
 
-  logger.info(f"mAP: {map_score:0.4f}")
+  logger.info("Average precision scores:")
 
+  for category in data_builder.info.features["label"].names:
+    ap = AP_scores[data_builder.info.features["label"].names.index(category)]
+    logger.info(f"{category}: {ap:0.4f}")
+  logger.info(f"mAP: {np.mean(AP_scores):0.4f}")
 
 if __name__ == "__main__":
   parser = bit_common.argparser(models.KNOWN_MODELS.keys())
