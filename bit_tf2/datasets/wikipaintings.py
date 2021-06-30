@@ -60,7 +60,7 @@ class Wikipaintings(tfds.core.GeneratorBasedBuilder):
                 "image": tfds.features.Image(),
                 "label": tfds.features.ClassLabel(num_classes=22),
             }),
-            supervised_keys=("fname", "image", "label",),
+            supervised_keys=("image", "label",),
             homepage=_URL,
             citation=_CITATION
         )
@@ -114,6 +114,5 @@ class Wikipaintings(tfds.core.GeneratorBasedBuilder):
                 yield idx, {
                     "fname": fname,
                     "image": fname,
-                    #"label": descriptor["categories"].index(label)
                     "label": label
                 }
