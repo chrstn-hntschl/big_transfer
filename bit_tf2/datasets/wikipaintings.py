@@ -56,10 +56,11 @@ class Wikipaintings(tfds.core.GeneratorBasedBuilder):
             builder=self,
             description=_DESCRIPTION,
             features=tfds.features.FeaturesDict({
+                "fname": tfds.features.Text(),
                 "image": tfds.features.Image(),
                 "label": tfds.features.ClassLabel(num_classes=22),
             }),
-            supervised_keys=("image", "label"),
+            supervised_keys=("fname", "image", "label",),
             homepage=_URL,
             citation=_CITATION
         )
@@ -109,8 +110,10 @@ class Wikipaintings(tfds.core.GeneratorBasedBuilder):
         """
         for label in self.info.features["label"].names:
             for idx in descriptor[subset]["gt"][label]:
+                fname = os.path.join(images_dir_path, descriptor[subset]["images"][idx])
                 yield idx, {
-                    "image": os.path.join(images_dir_path, descriptor[subset]["images"][idx]),
+                    "fname": fname,
+                    "image": fname,
                     #"label": descriptor["categories"].index(label)
                     "label": label
                 }
