@@ -145,7 +145,7 @@ def main(args):
       callbacks=[BiTLRSched(args.base_lr, dataset_info['num_examples'], args.batch)],
   )
 
-  # FIXME: extract into separate predict method with evaluation metrics as parameter
+  # FIXME: extract into separate predict method with evaluation metrics as parameter and output dir
   split = input_pipeline.DATASET_SPLITS[args.dataset]["test"]
   dataset_info = input_pipeline.get_dataset_info(
       dataset=args.dataset, dataset_config=args.dataset_config, split=split, examples_per_class=None)
@@ -174,7 +174,7 @@ def main(args):
   logger.info("Average precision scores:")
 
   import csv
-  aps_fname = f"{args.dataset_config}_{args.model}.csv" if args.dataset_config else f"{args.dataset}_{args.model}.csv"
+  aps_fname = f"{args.name}.csv"
   with open(os.path.join("/root/tensorflow_datasets/",aps_fname), 'w') as out_csv:
     csv_writer = csv.writer(out_csv, delimiter=',')
     for category in data_builder.info.features["label"].names:
