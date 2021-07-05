@@ -20,7 +20,8 @@ _CITATION = """
 """
 
 _URL = "https://github.com/chrstn-hntschl/datasets/tree/master/wikipaintings"
-_DATASET_URL = "https://my.hidrive.com/api/sharelink/download?id=ErTgRlMv"
+#_DATASET_URL = "https://my.hidrive.com/api/sharelink/download?id=ErTgRlMv"
+_DATASET_URL = "https://my.hidrive.com/api/sharelink/download?id=X1zARbAU"
 
 
 @dataclasses.dataclass
@@ -40,6 +41,8 @@ class Wikipaintings(tfds.core.GeneratorBasedBuilder):
     # pytype: disable=wrong-keyword-args
     BUILDER_CONFIGS = [
         # `name` (and optionally `description`) are required for each config
+        WikipaintingsConfig(name="Wikipaintings_1", description='', split=1),
+        WikipaintingsConfig(name="Wikipaintings_2", description='', split=2),
         WikipaintingsConfig(name="Wikipaintings_5", description='', split=5),
         WikipaintingsConfig(name="Wikipaintings_10", description='', split=10),
         WikipaintingsConfig(name="Wikipaintings_20", description='', split=20),
