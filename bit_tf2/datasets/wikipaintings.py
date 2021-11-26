@@ -19,9 +19,9 @@ It should also contain any processing which has been applied (if any),
 _CITATION = """
 """
 
-_URL = "https://github.com/chrstn-hntschl/datasets/tree/master/wikipaintings"
+_URL = "https://github.com/chrstn-hntschl/vision_datasets/tree/master/wikipaintings"
 #_DATASET_URL = "https://my.hidrive.com/api/sharelink/download?id=ErTgRlMv"
-_DATASET_URL = "https://my.hidrive.com/api/sharelink/download?id=X1zARbAU"
+_DATASET_URL = "https://my.hidrive.com/api/sharelink/download?id=cLTgRhBQ"
 
 
 @dataclasses.dataclass
